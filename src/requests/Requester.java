@@ -33,7 +33,7 @@ public class Requester extends PropertyAware {
     /**
      * A request with a list of parameters to be added to the request.
      *
-     * Expecting parameters as String array, of the form key, value.
+     * Expecting parameters as String array, each value is added in order to the end point parameters.
      *
      * If no Strings provided essentially the same as {@link #sendRequest(String)}
      * @param endPoint
@@ -43,7 +43,9 @@ public class Requester extends PropertyAware {
         if(Arrays.asList(params).isEmpty()) {
             sendRequest(endPoint);
         }
-        //else do something fancy  TODO
+        for(String parameter : params) {
+            sendRequest(String.format(endPoint, parameter));
+        }
     }
 
     public String getResponse() {

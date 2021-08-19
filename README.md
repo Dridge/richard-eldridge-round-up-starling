@@ -26,7 +26,7 @@ properties to `config.properties`, and loaded in by the `PropertiesReader`, expo
 ## core.RoundUp
 The main class that runs the program, with help from the `PropertiesManager` and the `core.RoundUpExecutor`
 
-## AccountManager
+## core.AccountManager
 Will provide all accounts for the user defined in the `config.properties` file
 
 ## TransactionManager
