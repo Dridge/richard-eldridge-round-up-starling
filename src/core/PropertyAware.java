@@ -1,3 +1,5 @@
+package core;
+
 import properties.PropertiesManager;
 
 public abstract class PropertyAware {
@@ -5,7 +7,7 @@ public abstract class PropertyAware {
     private String baseUrlValue = "";
     private String accountUriValue = "";
 
-    PropertyAware() {
+    protected PropertyAware() {
         authKeyValue = PropertiesManager.getAuthKeyValue();
         baseUrlValue = PropertiesManager.getBaseUrlValue();
         accountUriValue = PropertiesManager.getAccountUidValue();
@@ -17,5 +19,9 @@ public abstract class PropertyAware {
 
     protected String getBaseUrlValue() {
         return baseUrlValue;
+    }
+
+    protected String getAccountUidValue() {
+        return accountUriValue;
     }
 }

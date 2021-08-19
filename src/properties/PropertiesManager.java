@@ -20,6 +20,13 @@ public class PropertiesManager {
         return getProperty(baseUrl);
     }
 
+    /**
+     * Gets a given property from the properties file, loads the current file every time
+     * TODO cache the file? or maybe make this a stateful singleton?
+     *
+     * @param propertyKey
+     * @return property value
+     */
     public static String getProperty(String propertyKey) {
         setProperties();
         return String.valueOf(properties.get(propertyKey));
