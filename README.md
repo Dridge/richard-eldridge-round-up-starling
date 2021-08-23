@@ -24,19 +24,41 @@ Values that might represent each install, or need to be shared across many parts
 properties to `config.properties`, and loaded in by the `PropertiesReader`, exposed by a getter method in the 
 `PropertiesManager`.
 
-## core.RoundUp
+## RoundUp
 The main class that runs the program, with help from the `PropertiesManager` and the `core.RoundUpExecutor`
 
 ## core.AccountManager
 Will provide all accounts for the user defined in the `config.properties` file
 
+Requires an accountHolderUid
+
+Returns accountUid
+
 ## TransactionManager
 Will provide a list of transactions over a given time period
 
+Requires an accountUid
+
+Returns a list of doubles
+
+## RoundUpCalculator
+Calculates the round up given a set of doubles.
+
+Requires a list of doubles
+
+returns a total for the round up of that week
+
 ## SavingGoalManager
-Creates a named saving goal
+Creates a named saving goal, or gets one matching the same name
+
+Requires a savings goal name
+
+returns the savingsGoalUid
 
 ## Transferor
 Transfers the given amount(s) to the savings goals
 
+Requires an accountUid, savingsGoalUid and an amount.
+
+Returns true if successful, else program throws exception
 
