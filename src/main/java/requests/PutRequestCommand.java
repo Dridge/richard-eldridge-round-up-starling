@@ -2,7 +2,6 @@ package requests;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,12 +17,12 @@ class PutRequestCommand extends RequestCommand implements IRequestCommand {
     }
 
     @Override
-    public void sendParameterisedRequest(String enableRoundUpEndpoint, String accountUid) {
+    public void sendParameterisedRequest(String enableRoundUpEndpoint, String parameter) {
         // Do nothing, this is a put request, we need something to put.
     }
 
     @Override
-    public void sendParameterisedRequest(String endpoint, String parameter, String body) {
+    public void sendParameterisedRequest(String endpoint, String body, String... parameter) {
         logger.log(Level.INFO, "Request body is:" + body);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(getBaseUrlValue() + String.format(endpoint, parameter)))

@@ -17,9 +17,6 @@ public class AccountManager {
      */
     public Account getAccount() {
         requester.sendRequest(accountsEndPoint);
-        if(requester.getResponseCode() != 200) {
-            throw new RuntimeException("ERROR");
-        }
         String response = requester.getResponseBody();
         String accountUid = Arrays.asList(response
                 .split(",|:"))

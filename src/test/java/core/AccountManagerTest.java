@@ -11,7 +11,6 @@ public class AccountManagerTest {
     AccountManager managerUnderTest;
     IRequestCommand requester = Mockito.mock(IRequestCommand.class);
 
-
     @Test
     void testAccountManagerGetsAccount() {
         String dummyResponse = "{\"accounts\":[{\"accountUid\":\"12345\",\"accountType\":\"PRIMARY\",\"defaultCategory\":\"98765\"";

@@ -19,7 +19,7 @@ class GetRequestCommand extends RequestCommand implements IRequestCommand {
     }
 
     @Override
-    public void sendParameterisedRequest(String endpoint, String accountUid) {
+    public void sendParameterisedRequest(String endpoint, String parameters) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(getBaseUrlValue() + endpoint))
                 .GET()
@@ -30,8 +30,7 @@ class GetRequestCommand extends RequestCommand implements IRequestCommand {
     }
 
     @Override
-    public void sendParameterisedRequest(String endpoint, String accountUid, String body) {
-        // Ignore body, this is a get request
-        sendRequest(String.format(endpoint, accountUid));
+    public void sendParameterisedRequest(String endpoint, String body, String... parameters) {
+        // Ignore
     }
 }

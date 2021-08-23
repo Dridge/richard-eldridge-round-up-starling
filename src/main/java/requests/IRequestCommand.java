@@ -5,7 +5,7 @@ public interface IRequestCommand {
 
     void sendParameterisedRequest(String enableRoundUpEndpoint, String accountUid);
 
-    void sendParameterisedRequest(String enableRoundUpEndpoint, String accountUid, String body);
+    void sendParameterisedRequest(String enableRoundUpEndpoint, String body, String... accountUid);
 
     boolean responseContains(String text);
 

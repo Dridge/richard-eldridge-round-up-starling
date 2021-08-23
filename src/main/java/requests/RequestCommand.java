@@ -33,6 +33,10 @@ public abstract class RequestCommand extends PropertyAware implements IRequestCo
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+        if(response.statusCode() != 200 && response.statusCode() != 202 && response.statusCode() != 204) {
+            logger.log(Level.SEVERE, "Error during request send! Body is:\n" + String.valueOf(response.body()));
+            throw new RuntimeException("Error during request send!");
+        }
         logger.log(Level.INFO, "Response is : " + response.statusCode() + ", and body:\n" + response.body());
     }
 }

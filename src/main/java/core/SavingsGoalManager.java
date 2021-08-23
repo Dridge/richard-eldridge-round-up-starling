@@ -4,18 +4,19 @@ import requests.*;
 
 public class SavingsGoalManager {
     private final String accountUid;
+    private IRequestCommand requester;
     public SavingsGoalManager(IRequestCommand requester, String accountUid) {
+        this.requester = requester;
         this.accountUid = accountUid;
     }
 
     public String getOrCreateSavingsGoal() {
         String createSavingsGoalEndpoint = "/api/v2/account/%s/savings-goals";
-        IRequestCommand requester = RequestFactory.getRequestCommand(RequestType.GET);
         requester.sendParameterisedRequest(createSavingsGoalEndpoint, accountUid);
         if (requester.responseContains("savingsGoalUid")
                 && requester.responseContains("Round Up Savings Goal")) {
             //TODO get existing savings goal?
-        } else {
+        } else { //TODO split this into two methods for testability
             requester = RequestFactory.getRequestCommand(RequestType.PUT);
             String body = """
                     {
@@ -27,7 +28,7 @@ public class SavingsGoalManager {
                       },
                       "base64EncodedPhoto": "string"
                     }""";
-            requester.sendParameterisedRequest(createSavingsGoalEndpoint, accountUid, body);
+            requester.sendParameterisedRequest(createSavingsGoalEndpoint, body, accountUid);
         }
         return "";
     }
