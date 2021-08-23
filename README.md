@@ -12,10 +12,11 @@ A java application to help users round up their purchases for their next saving 
 
 # Overall Structure
 
+Assuming one account.
 The RoundUpExecutor runs through each step: 
-1. Get all accounts for the given user
-1. Get every transaction for each account within the last x time (tbc)
-1. Get the total rounded up figure per account (within the last x time)
+1. Get the account for given user
+1. Get every transaction for that account within the last x time (tbc)
+1. Get the total rounded up figure of that subset of transactions
 1. Creates a savings goal
 1. Transfers money from each account into the savings goal (tbc)
 

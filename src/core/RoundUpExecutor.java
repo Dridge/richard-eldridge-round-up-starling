@@ -8,12 +8,18 @@ public class RoundUpExecutor extends PropertyAware {
      */
     public void execute() {
         Requester requester = new Requester();
-        requester.sendRequest("/api/v2/account-holder/individual");
-        System.out.println(requester.getResponse());
+        requester.sendGetRequest("/api/v2/account-holder/individual");
 
         AccountManager accountManager = new AccountManager();
         accountManager.getAccounts();
-        accountManager.enableRoundUp();
-        accountManager.doRoundUp();
+        //TODO retrieve transactions for a customer
+        accountManager.getTransactionsFromPastWeek(1);
+        accountManager.workOutRoundUps();
+        //accountManager.createSavingsGoal(); //TODO if savings goal is not present, create one?
+        accountManager.getSavingsGoal();
+        accountManager.transferRoundedUpToSavingsGoal();
+//        accountManager.getRoundUpId();
+//        accountManager.enableRoundUp();
+//        accountManager.doRoundUp();
     }
 }
