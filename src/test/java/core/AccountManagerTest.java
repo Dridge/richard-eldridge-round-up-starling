@@ -1,6 +1,5 @@
 package core;
 
-import core.AccountManager;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import requests.IRequestCommand;

@@ -16,8 +16,6 @@ public class TransactionManager {
     Account account;
     IRequestCommand requester;
 
-    String string = "2013-03-05T18:05:05.000Z";
-    String defaultTimezone = TimeZone.getDefault().getID();
     public TransactionManager(RequestFactory factory, Account account) {
         this.account = account;
         this.requester = factory.getRequestCommand(RequestType.GET);
@@ -45,22 +43,17 @@ public class TransactionManager {
 
     private List<Integer> getOutFiguresOnly(String response) {
         List<Integer> result = new ArrayList<>();
-        List<String> feedItems = Arrays.asList(response.split("\\["));
+        List<String> feedItems = Arrays.asList(response.split("\\[|\\{"));
         List<String> outItemsOnly = feedItems.subList(1, feedItems.size())
                 .stream()
-                .filter(e -> e.contains("\"direction\": \"OUT\""))
+                .filter(e -> e.contains("\"direction\":\"OUT\""))
                 .collect(Collectors
                 .toList());
-        for (String item : feedItems) {
-            if( item.contains("\"direction\": \"OUT\"")) {
-                outItemsOnly.add(item);
-            }
-        }
         for (String feedItem : outItemsOnly) {
             String[] item = feedItem.split(",");
             int amount = Integer.parseInt(
-                    item[5].split(": ")[1]
-                        .replaceAll("\\n      }", "")
+                    item[1].split(":")[1]
+                        .replace("}", "").trim()
             );
             result.add(amount);
         }
