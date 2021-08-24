@@ -1,6 +1,9 @@
 package core;
 
-import properties.PropertiesManager;
+import properties.PropertyManager;
 
-public abstract class PropertyAware extends PropertiesManager {
+/**
+ * Wrapper class to allow some classes property awareness
+ */
+public abstract class PropertyAware extends PropertyManager {
 }

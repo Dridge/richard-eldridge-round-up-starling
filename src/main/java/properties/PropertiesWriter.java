@@ -1,18 +1,34 @@
 package properties;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import core.PropertyAware;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PropertiesWriter {
+public class PropertiesWriter extends PropertyAware {
     private static final Logger logger = Logger.getLogger(PropertiesReader.class.getName());
     private static final String propertiesFile = "config.properties";
 
-    void writeProperties(String key, String value) {
-        Properties properties = new Properties();
-        properties.setProperty(key, value);
+    public void writeSavingsGoalUidToProperties(String value) {
+        readPropertiesFromConfigFile();
+        if (!value.isEmpty() && getSavingsGoalUidPropertyOrNull() == null) {
+            StringBuilder propertyString = new StringBuilder();
+            propertyString.append("\n").append(savingsGoalUidKey).append("=").append(value);
+            try {
+                Files.write(
+                        Paths.get(propertiesFile),
+                        propertyString.toString().getBytes(),
+                        StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "Unable to store new property, " +
+                        "will result in more requests sent. " +
+                        "Error is:\n" + e.getMessage());
+            }
+        }
     }
 }

@@ -1,14 +1,19 @@
 package core;
 
+import exception.SavingsGoalParsingException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import requests.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SavingsGoalManager extends PropertyAware {
-    public static final String AUTO_SAVINGS_GOAL = "Auto Savings Goal";
+    private static final Logger logger = Logger.getLogger(SavingsGoalManager.class.getName());
+
+    public static final String AUTO_SAVINGS_GOAL_NAME = "Auto Savings Goal";
     public static final String SAVINGS_GOAL_UID = "savingsGoalUid";
     private final String accountUid;
     private IRequestCommand requester;
@@ -24,20 +29,17 @@ public class SavingsGoalManager extends PropertyAware {
      * Gets the savings goal for round ups, if it doesnt exist creates it first
      * @return savingsGoalUid
      */
-    public String getOrCreateSavingsGoal() {
+    public String getOrCreateSavingsGoal() throws SavingsGoalParsingException {
         String savingsGoalEndpoint = "/api/v2/account/%s/savings-goals";
         String savingsGoalUid;
         //If the property is available, no need for extra work set it and move on
-        if(!getSavingsGoalUidProperty().isEmpty()) {
-            savingsGoalUid = getSavingsGoalUidProperty();
-        } else {
+        savingsGoalUid = getSavingsGoalUidPropertyOrNull();
+        if(savingsGoalUid == null) {
             // If the property is not available, check if an auto generated goal exists use that one
             sendSavingsGoalRequest(savingsGoalEndpoint);
-            if (requester.responseContains(SAVINGS_GOAL_UID)
-                    || requester.responseContains(AUTO_SAVINGS_GOAL)) {
-                savingsGoalUid = getSavingsGoalUidFromResponse(requester.getResponseBody());
-            } else {
-                // scenario where we need to create a new savings goal
+            savingsGoalUid = getSavingsGoalUidFromResponseWithJsonParser(requester.getResponseBody());
+            if (savingsGoalUid.isEmpty()) {
+                // if it doesn't exit create it
                 requester = factory.getRequestCommand(RequestType.PUT);
                 String body = String.format("""
                         {
@@ -48,9 +50,10 @@ public class SavingsGoalManager extends PropertyAware {
                             "minorUnits": 999
                           },
                           "base64EncodedPhoto": "string"
-                        }""", AUTO_SAVINGS_GOAL);
+                        }""", AUTO_SAVINGS_GOAL_NAME);
                 requester.sendRequest(String.format(savingsGoalEndpoint, accountUid), body);
-                savingsGoalUid = getSavingsGoalUidFromResponse(requester.getResponseBody());
+                System.out.println(requester.getResponseBody());
+                savingsGoalUid = getSavingsGoalUidFromResponseWithJsonParser(requester.getResponseBody());
             }
         }
         setSavingsGoalUidProperty(savingsGoalUid);
@@ -63,23 +66,27 @@ public class SavingsGoalManager extends PropertyAware {
     }
 
     /**
-     * A bit of a verbose way to extract the field we need, look for JSON java interpreters in future
-     * Handles both put and get responses, but like other response body handlers is very brittle at the moment
+     * Improved to use JSONsimple, copying examples from
+     * https://code.google.com/archive/p/json-simple/wikis/DecodingExamples.wiki
      * @param body
      * @return The SavingsGoalUid
      */
-    private String getSavingsGoalUidFromResponse(String body) {
+    private String getSavingsGoalUidFromResponseWithJsonParser(String body) throws SavingsGoalParsingException {
         String uid = "";
-
-        
-        String savingsGoalUidFieldText = "\"" + SAVINGS_GOAL_UID + "\":";
-        List<String> feedItems = Arrays.asList(body.split("\\{"));
-        List<String> savingsGoalsOnly = feedItems.subList(2, feedItems.size())
-                .stream()
-                .filter(e -> e.contains(savingsGoalUidFieldText))
-                .collect(Collectors.toList());
-        String[] item = savingsGoalsOnly.get(0).split(",");
-        uid = item[0].split(":")[1].replace("\"", "");
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject jsonObj  = (JSONObject) parser.parse(body);
+            JSONArray array = (JSONArray) jsonObj.get("savingsGoalList");
+            for(Object savingsGoal : array) {
+                if (((JSONObject) savingsGoal).get("name").equals(AUTO_SAVINGS_GOAL_NAME)) {
+                    return ((JSONObject) savingsGoal).get(SAVINGS_GOAL_UID).toString();
+                }
+            }
+        } catch (ParseException e) {
+            logger.log(Level.WARNING, "ERROR, json in unexpected format. Unable to parse.\n"
+                    + e.getMessage());
+            throw new SavingsGoalParsingException();
+        }
         return uid;
     }
 }
