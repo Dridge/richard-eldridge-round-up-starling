@@ -13,12 +13,14 @@ import static java.time.LocalDateTime.now;
 
 public class TransactionManager {
     String endpoint = "/api/v2/feed/account/%s/category/%s/transactions-between";
-    Account account;
+    String accountUid;
+    String categoryUid;
     IRequestCommand requester;
 
-    public TransactionManager(RequestFactory factory, Account account) {
-        this.account = account;
+    public TransactionManager(RequestFactory factory, String accountUid, String categoryUid) {
         this.requester = factory.getRequestCommand(RequestType.GET);
+        this.accountUid = accountUid;
+        this.categoryUid = categoryUid;
     }
 
     /**
@@ -31,9 +33,7 @@ public class TransactionManager {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         String endDateString = dateTime.format(formatter);
         String startDateString = dateTime.minusDays(7).format(formatter);
-        StringBuilder builder = new StringBuilder(String.format(endpoint,
-                account.getAccountUid(),
-                account.getDefaultCategory()));
+        StringBuilder builder = new StringBuilder(String.format(endpoint, accountUid, categoryUid));
         builder.append(String.format("?minTransactionTimestamp=%s&maxTransactionTimestamp=%s",
                 startDateString,
                 endDateString));

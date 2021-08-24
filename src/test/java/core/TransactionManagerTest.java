@@ -2,18 +2,14 @@ package core;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import requests.IRequestCommand;
-import requests.RequestFactory;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TransactionManagerTest {
+public class TransactionManagerTest extends RequesterFactoryTest {
     TransactionManager managerUnderTest;
-    IRequestCommand requester = Mockito.mock(IRequestCommand.class);
     Account account = Mockito.mock(Account.class);
-    RequestFactory factory = Mockito.mock(RequestFactory.class);
 
     private String dummyResponse = """
                 {
@@ -77,8 +73,8 @@ public class TransactionManagerTest {
         Mockito.when(requester.getResponseCode()).thenReturn(200);
         Mockito.when(requester.getResponseBody()).thenReturn(dummyResponse);
         Mockito.when(account.getAccountUid()).thenReturn("12345");
-        Mockito.when(account.getDefaultCategory()).thenReturn("98765");
-        managerUnderTest = new TransactionManager(factory, account);
+        Mockito.when(account.getCategoryUid()).thenReturn("98765");
+        managerUnderTest = new TransactionManager(factory, account.getAccountUid(), account.getCategoryUid());
         List<Integer> listTransaction = managerUnderTest.getTransactionsFromPastWeek();
         assertEquals(123456, listTransaction.get(0)); // equivalent of 1234.56
     }
@@ -89,8 +85,8 @@ public class TransactionManagerTest {
         Mockito.when(requester.getResponseCode()).thenReturn(200);
         Mockito.when(requester.getResponseBody()).thenReturn(aLargerResponse);
         Mockito.when(account.getAccountUid()).thenReturn("12345");
-        Mockito.when(account.getDefaultCategory()).thenReturn("98765");
-        managerUnderTest = new TransactionManager(factory, account);
+        Mockito.when(account.getCategoryUid()).thenReturn("98765");
+        managerUnderTest = new TransactionManager(factory, account.getAccountUid(), account.getCategoryUid());
         List<Integer> listTransaction = managerUnderTest.getTransactionsFromPastWeek();
         assertEquals(22, listTransaction.size());
     }

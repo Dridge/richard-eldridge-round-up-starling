@@ -10,7 +10,7 @@ public class Transferor {
      * @param transferAmount
      * @return boolean whether the transfer was successful or not.
      */
-    public boolean execute(String accountUid, String savingsGoalUid, Double transferAmount) {
+    public boolean execute(String accountUid, String savingsGoalUid, int transferAmount) {
         return false;
     }
 }

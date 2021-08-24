@@ -19,9 +19,9 @@ class GetRequestCommand extends RequestCommand implements IRequestCommand {
     }
 
     @Override
-    public void sendParameterisedRequest(String endpoint, String parameters) {
+    public void sendParameterisedRequest(String endpoint, String parameter) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(getBaseUrlValue() + endpoint))
+                .uri(URI.create(getBaseUrlValue() + String.format(endpoint, parameter)))
                 .GET()
                 .setHeader("Content-Type","application/json")
                 .setHeader("Authorization", "Bearer " + getAuthKeyValue())

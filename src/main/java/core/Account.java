@@ -5,18 +5,18 @@ package core;
  */
 public class Account {
     private String accountUid = "";
-    private String defaultCategory = "";
+    private String categoryUid = "";
 
-    Account(String accountUid, String defaultCategory) {
+    Account(String accountUid, String categoryUid) {
         this.accountUid = accountUid;
-        this.defaultCategory = defaultCategory;
+        this.categoryUid = categoryUid;
     }
 
     public String getAccountUid() {
         return accountUid;
     }
 
-    public String getDefaultCategory() {
-        return defaultCategory;
+    public String getCategoryUid() {
+        return categoryUid;
     }
 }

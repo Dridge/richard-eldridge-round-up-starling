@@ -2,15 +2,11 @@ package core;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import requests.IRequestCommand;
-import requests.RequestFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AccountManagerTest {
+public class AccountManagerTest extends RequesterFactoryTest {
     AccountManager managerUnderTest;
-    IRequestCommand requester = Mockito.mock(IRequestCommand.class);
-    RequestFactory factory = Mockito.mock(RequestFactory.class);
 
     @Test
     void testAccountManagerGetsAccount() {
@@ -21,6 +17,6 @@ public class AccountManagerTest {
         managerUnderTest = new AccountManager(factory);
         Account account = managerUnderTest.getAccount();
         assertEquals("12345", account.getAccountUid());
-        assertEquals("98765", account.getDefaultCategory());
+        assertEquals("98765", account.getCategoryUid());
     }
 }
