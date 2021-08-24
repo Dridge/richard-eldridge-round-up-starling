@@ -1,14 +1,17 @@
 package core;
 
 import requests.IRequestCommand;
+import requests.RequestFactory;
+import requests.RequestType;
+
 import java.util.Arrays;
 
 public class AccountManager {
     private final String accountsEndPoint = "/api/v2/accounts";
 
     IRequestCommand requester;
-    public AccountManager(IRequestCommand requester) {
-        this.requester = requester;
+    public AccountManager(RequestFactory factory) {
+        this.requester = factory.getRequestCommand(RequestType.GET);
     }
 
     /**

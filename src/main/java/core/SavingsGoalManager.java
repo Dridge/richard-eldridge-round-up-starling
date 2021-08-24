@@ -5,8 +5,9 @@ import requests.*;
 public class SavingsGoalManager {
     private final String accountUid;
     private IRequestCommand requester;
-    public SavingsGoalManager(IRequestCommand requester, String accountUid) {
-        this.requester = requester;
+    private RequestFactory factory;
+    public SavingsGoalManager(RequestFactory factory, String accountUid) {
+        this.requester = factory.getRequestCommand(RequestType.GET);
         this.accountUid = accountUid;
     }
 
@@ -15,9 +16,9 @@ public class SavingsGoalManager {
         requester.sendParameterisedRequest(createSavingsGoalEndpoint, accountUid);
         if (requester.responseContains("savingsGoalUid")
                 && requester.responseContains("Round Up Savings Goal")) {
-            //TODO get existing savings goal?
-        } else { //TODO split this into two methods for testability
-            requester = RequestFactory.getRequestCommand(RequestType.PUT);
+
+        } else {
+            requester = factory.getRequestCommand(RequestType.PUT);
             String body = """
                     {
                       "name": "Round Up Savings Goal",

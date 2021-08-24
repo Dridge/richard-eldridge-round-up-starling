@@ -12,11 +12,12 @@ public class RoundUpExecutor extends PropertyAware {
      * Executes the round up
      */
     public void execute() throws Exception {
-        AccountManager accountManager = new AccountManager(RequestFactory.getRequestCommand(RequestType.GET));
+        RequestFactory factory = new RequestFactory();
+        AccountManager accountManager = new AccountManager(factory);
         Account account = accountManager.getAccount();
-        TransactionManager transactionManager = new TransactionManager(RequestFactory.getRequestCommand(RequestType.GET), account);
+        TransactionManager transactionManager = new TransactionManager(factory, account);
         List<Integer> transactions = transactionManager.getTransactionsFromPastWeek();
-
+        transactions.stream().forEach(e -> System.out.println(e.doubleValue()));
 //        SavingsGoalManager goalManager = new SavingsGoalManager(accountUid);
 //        String savingsGoalUid = goalManager.getOrCreateSavingsGoal();
 

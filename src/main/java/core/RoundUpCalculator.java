@@ -1,7 +1,5 @@
 package core;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 public class RoundUpCalculator {
