@@ -5,12 +5,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import properties.PropertyManager;
 import requests.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SavingsGoalManager extends PropertyAware {
+public class SavingsGoalManager extends PropertyManager {
     private static final Logger logger = Logger.getLogger(SavingsGoalManager.class.getName());
 
     public static final String AUTO_SAVINGS_GOAL_NAME = "Auto Savings Goal";

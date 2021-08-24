@@ -3,7 +3,7 @@ package properties;
 import java.util.Optional;
 import java.util.Properties;
 
-public class PropertyManager {
+public class PropertyManager implements PropertyAware {
     private static volatile Properties properties;
     private static final String authKey = "authKey";
     private static final String baseUrl = "baseUrl";

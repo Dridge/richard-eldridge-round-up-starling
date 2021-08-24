@@ -6,7 +6,7 @@ public enum RequestType {
 
     public final String label;
 
-    private RequestType(String label) {
+    RequestType(String label) {
         this.label = label;
     }
 }

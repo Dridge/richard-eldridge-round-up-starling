@@ -1,6 +1,7 @@
 package requests;
 
-import core.PropertyAware;
+import properties.PropertyAware;
+import properties.PropertyManager;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
@@ -9,7 +10,7 @@ import java.net.http.HttpResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class RequestCommand extends PropertyAware implements IRequestCommand {
+public abstract class RequestCommand extends PropertyManager implements IRequestCommand {
     private static final Logger logger = Logger.getLogger(GetRequestCommand.class.getName());
     private HttpResponse response;
 
