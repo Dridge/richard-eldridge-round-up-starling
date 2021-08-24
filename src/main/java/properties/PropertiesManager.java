@@ -7,33 +7,40 @@ public class PropertiesManager {
     private static final String authKey = "authKey";
     private static final String baseUrl = "baseUrl";
     private static final String accountUidKey = "accountHolderUid";
+    private static final String savingsGoalUidKey = "savingsGoalUid";
 
-    public static String getAccountUidValue() {
-        return getProperty(accountUidKey);
+    protected PropertiesManager() {
+        populateProperties();
     }
 
-    public static String getAuthKeyValue() {
-        return getProperty(authKey);
+    protected String getAuthProperty() {
+        return String.valueOf(properties.get(authKey));
     }
 
-    public static String getBaseUrlValue() {
-        return getProperty(baseUrl);
+    protected String getBaseUrlProperty() {
+        return String.valueOf(properties.get(baseUrl));
     }
 
-    /**
-     * Gets a given property from the properties file, loads the current file every time
-     * TODO cache the file? or maybe make this a stateful singleton?
-     *
-     * @param propertyKey
-     * @return property value
-     */
-    public static String getProperty(String propertyKey) {
-        setProperties();
-        return String.valueOf(properties.get(propertyKey));
+    protected String getAccountUidProperty() {
+        return String.valueOf(properties.get(accountUidKey));
     }
 
-    private static void setProperties() {
+    protected String getSavingsGoalUidProperty() {
+        return String.valueOf(properties.get(savingsGoalUidKey));
+    }
+
+    protected void setSavingsGoalUidProperty(String value) {
+        addProperty(savingsGoalUidKey, value);
+    }
+
+    private static void populateProperties() {
         PropertiesReader reader = new PropertiesReader();
         properties = reader.loadProperties();
+    }
+
+    private static void addProperty(String key, String value) {
+        PropertiesWriter writer = new PropertiesWriter();
+        writer.writeProperties(key, value);
+        populateProperties();
     }
 }

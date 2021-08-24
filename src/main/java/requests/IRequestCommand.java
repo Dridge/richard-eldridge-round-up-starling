@@ -1,11 +1,9 @@
 package requests;
 
 public interface IRequestCommand {
-    void sendRequest(String accountsEndPoint);
+    void sendRequest(String endpoint);
 
-    void sendParameterisedRequest(String enableRoundUpEndpoint, String accountUid);
-
-    void sendParameterisedRequest(String enableRoundUpEndpoint, String body, String... accountUid);
+    void sendRequest(String endpoint, String body);
 
     boolean responseContains(String text);
 

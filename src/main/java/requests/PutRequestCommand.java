@@ -17,18 +17,13 @@ class PutRequestCommand extends RequestCommand implements IRequestCommand {
     }
 
     @Override
-    public void sendParameterisedRequest(String enableRoundUpEndpoint, String parameter) {
-        // Do nothing, this is a put request, we need something to put.
-    }
-
-    @Override
-    public void sendParameterisedRequest(String endpoint, String body, String... parameter) {
+    public void sendRequest(String endpoint, String body) {
         logger.log(Level.INFO, "Request body is:" + body);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(getBaseUrlValue() + String.format(endpoint, parameter)))
+                .uri(URI.create(getBaseUrlProperty() + endpoint))
                 .PUT(HttpRequest.BodyPublishers.ofString(body))
                 .setHeader("Content-Type","application/json")
-                .setHeader("Authorization", "Bearer " + getAuthKeyValue())
+                .setHeader("Authorization", "Bearer " + getAuthProperty())
                 .build();
         send(request);
     }

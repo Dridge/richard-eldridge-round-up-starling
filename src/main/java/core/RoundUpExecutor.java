@@ -1,14 +1,15 @@
 package core;
 
+import exception.TransferFailedException;
 import requests.RequestFactory;
 import java.util.List;
 
-public class RoundUpExecutor extends PropertyAware {
+public class RoundUpExecutor {
     /**
      * Executes the round up
-     * TODO command pattern? builder pattern?
+     * TODO command pattern? builder pattern? or chain of responsibility?
      */
-    public void execute() {
+    public void execute() throws TransferFailedException {
         RequestFactory factory = new RequestFactory();
         AccountManager accountManager = new AccountManager(factory);
         Account account = accountManager.getAccount();
@@ -16,6 +17,8 @@ public class RoundUpExecutor extends PropertyAware {
         List<Integer> transactions = transactionManager.getTransactionsFromPastWeek();
         String savingsGoalUid = new SavingsGoalManager(factory, account.getAccountUid()).getOrCreateSavingsGoal();
         int transferAmount = new RoundUpCalculator(transactions).getResult();
-        new Transferor().execute(account.getAccountUid(), savingsGoalUid, transferAmount);
+        if(!(Transferor.execute(factory, account.getAccountUid(), savingsGoalUid, transferAmount))) {
+            throw new TransferFailedException();
+        }
     }
 }

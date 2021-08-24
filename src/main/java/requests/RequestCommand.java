@@ -14,7 +14,7 @@ public abstract class RequestCommand extends PropertyAware implements IRequestCo
     private HttpResponse response;
 
     public boolean responseContains(String text) {
-        return String.valueOf(response.body()).contains(text);
+        return !String.valueOf(response.body()).contains(text);
     }
 
     public String getResponseBody() {

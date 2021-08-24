@@ -10,27 +10,17 @@ class GetRequestCommand extends RequestCommand implements IRequestCommand {
     @Override
     public void sendRequest(String endpoint) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(getBaseUrlValue() + endpoint))
+                .uri(URI.create(getBaseUrlProperty() + endpoint))
                 .GET()
                 .setHeader("Content-Type","application/json")
-                .setHeader("Authorization", "Bearer " + getAuthKeyValue())
+                .setHeader("Authorization", "Bearer " + getAuthProperty())
                 .build();
         send(request);
     }
 
     @Override
-    public void sendParameterisedRequest(String endpoint, String parameter) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(getBaseUrlValue() + String.format(endpoint, parameter)))
-                .GET()
-                .setHeader("Content-Type","application/json")
-                .setHeader("Authorization", "Bearer " + getAuthKeyValue())
-                .build();
-        send(request);
+    public void sendRequest(String endpoint, String body) {
+        //do nothing
     }
 
-    @Override
-    public void sendParameterisedRequest(String endpoint, String body, String... parameters) {
-        // Ignore
-    }
 }
