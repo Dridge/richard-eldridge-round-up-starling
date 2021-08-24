@@ -4,6 +4,18 @@ A java application to help users round up their purchases for their next saving 
 There's still plenty more I'd like to do, but this hopefully shows my thinking and direction of travel as well as
 being functionally complete.
 
+# How to run this application?
+
+Runs from your IDE, can be imported as a maven project.
+
+Update the config.properties with the base url and the auth key you need
+
+Make sure the properties are correct and click run.
+
+The output of each request are printed to logs visible in the console.
+
+Note: savingsGoalUid is written to the properties file, so the repeated runs don't recreate multiple savings goals (that was the plan at least). But as of now, you need to manually delete it after each run (unless you want to reuse that savings goal that is).
+
 # Overall Structure
 
 - The `core` package contains the majority of the code
